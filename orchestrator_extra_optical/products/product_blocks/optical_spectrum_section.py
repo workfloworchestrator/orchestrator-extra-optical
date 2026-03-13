@@ -17,10 +17,13 @@ from annotated_types import Len
 from orchestrator.domain.base import ProductBlockModel
 from orchestrator.types import SI, SubscriptionLifecycle
 
-from orchestrator_extra_optical.products.product_blocks.optical_device_port import (
-    OpticalDevicePortBlock,
-    OpticalDevicePortBlockInactive,
-    OpticalDevicePortBlockProvisioning,
+from orchestrator_extra_optical.products.product_blocks.optical_ports import (
+    OlsAddDropPortBlock,
+    OlsAddDropPortBlockInactive,
+    OlsAddDropPortBlockProvisioning,
+    OlsLinePortBlock,
+    OlsLinePortBlockInactive,
+    OlsLinePortBlockProvisioning,
 )
 
 AddDropPorts = Annotated[list[SI], Len(min_length=2, max_length=2)]
@@ -28,22 +31,18 @@ AddDropPorts = Annotated[list[SI], Len(min_length=2, max_length=2)]
 RouteAsListOfPorts = Annotated[list[SI], Len(min_length=0, max_length=64)]
 
 
-class OpticalSpectrumSectionBlockInactive(
-    ProductBlockModel, product_block_name="OpticalSpectrumSection"
-):
-    add_drop_ports: AddDropPorts[OpticalDevicePortBlockInactive]
-    optical_path: RouteAsListOfPorts[OpticalDevicePortBlockInactive]
+class OpticalSpectrumSectionBlockInactive(ProductBlockModel, product_block_name="OpticalSpectrumSection"):
+    add_drop_ports: AddDropPorts[OlsAddDropPortBlockInactive]
+    express_ports: RouteAsListOfPorts[OlsLinePortBlockInactive]
 
 
 class OpticalSpectrumSectionBlockProvisioning(
     OpticalSpectrumSectionBlockInactive, lifecycle=[SubscriptionLifecycle.PROVISIONING]
 ):
-    add_drop_ports: AddDropPorts[OpticalDevicePortBlockProvisioning]
-    optical_path: RouteAsListOfPorts[OpticalDevicePortBlockProvisioning]
+    add_drop_ports: AddDropPorts[OlsAddDropPortBlockProvisioning]
+    express_ports: RouteAsListOfPorts[OlsLinePortBlockProvisioning]
 
 
-class OpticalSpectrumSectionBlock(
-    OpticalSpectrumSectionBlockProvisioning, lifecycle=[SubscriptionLifecycle.ACTIVE]
-):
-    add_drop_ports: AddDropPorts[OpticalDevicePortBlock]
-    optical_path: RouteAsListOfPorts[OpticalDevicePortBlock]
+class OpticalSpectrumSectionBlock(OpticalSpectrumSectionBlockProvisioning, lifecycle=[SubscriptionLifecycle.ACTIVE]):
+    add_drop_ports: AddDropPorts[OlsAddDropPortBlock]
+    express_ports: RouteAsListOfPorts[OlsLinePortBlock]

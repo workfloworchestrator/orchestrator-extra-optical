@@ -11,6 +11,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from enum import StrEnum
+
 from orchestrator.domain.base import SubscriptionModel
 from orchestrator.types import SubscriptionLifecycle
 
@@ -21,17 +23,25 @@ from orchestrator_extra_optical.products.product_blocks.optical_digital_service 
 )
 
 
+class ServiceSpeedAndType(StrEnum):
+    ETHERNET_100GBPS = "100Gbps Ethernet"
+    ETHERNET_400GBPS = "400Gbps Ethernet"
+
+
 class OpticalDigitalServiceInactive(SubscriptionModel, is_base=True):
+    speed_and_type = ServiceSpeedAndType
     optical_digital_service: OpticalDigitalServiceBlockInactive
 
 
 class OpticalDigitalServiceProvisioning(
     OpticalDigitalServiceInactive, lifecycle=[SubscriptionLifecycle.PROVISIONING]
 ):
+    speed_and_type = ServiceSpeedAndType
     optical_digital_service: OpticalDigitalServiceBlockProvisioning
 
 
 class OpticalDigitalService(
     OpticalDigitalServiceProvisioning, lifecycle=[SubscriptionLifecycle.ACTIVE]
 ):
+    speed_and_type = ServiceSpeedAndType
     optical_digital_service: OpticalDigitalServiceBlock

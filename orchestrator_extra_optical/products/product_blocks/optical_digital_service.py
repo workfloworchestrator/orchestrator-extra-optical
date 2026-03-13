@@ -11,75 +11,53 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from enum import StrEnum
 from typing import Annotated
 
 from annotated_types import Len
 from orchestrator.domain.base import ProductBlockModel
 from orchestrator.types import SI, SubscriptionLifecycle
-from pydantic import computed_field
-from pydantic_forms.types import UUIDstr
-
-from orchestrator_extra_optical.products.product_blocks.optical_device_port import (
-    OpticalDevicePortBlock,
-    OpticalDevicePortBlockInactive,
-    OpticalDevicePortBlockProvisioning,
+from products.product_blocks.optical_ports import (
+    TrxClientInterfaceBlock,
+    TrxClientInterfaceBlockInactive,
+    TrxClientInterfaceBlockProvisioning,
 )
-from orchestrator_extra_optical.products.product_blocks.transport_channel import (
+
+from orchestrator_extra_optical.products.product_blocks.optical_transport_channel import (
     OpticalTransportChannelBlock,
     OpticalTransportChannelBlockInactive,
     OpticalTransportChannelBlockProvisioning,
 )
-
-
-class ClientSpeednType(StrEnum):
-    Ethernet100Gbps = "100Gbps Ethernet"
-    Ethernet400Gbps = "400Gbps Ethernet"
-
 
 ListOfClient_ports = Annotated[list[SI], Len(min_length=2, max_length=2)]
 
 ListOfTransport_channels = Annotated[list[SI], Len(min_length=1, max_length=2)]
 
 
+
 class OpticalDigitalServiceBlockInactive(
     ProductBlockModel, product_block_name="OpticalDigitalService"
 ):
+    service_id: str | None = None
     service_name: str | None = None
-    service_type: ClientSpeednType | None = None
-    flow_id: int | None = None
-    client_id: int | None = None
-    client_ports: ListOfClient_ports[OpticalDevicePortBlockInactive]
+    client_ports: ListOfClient_ports[TrxClientInterfaceBlockInactive]
     transport_channels: ListOfTransport_channels[OpticalTransportChannelBlockInactive]
-    nms_uuid: UUIDstr | None = None
 
 
 class OpticalDigitalServiceBlockProvisioning(
     OpticalDigitalServiceBlockInactive, lifecycle=[SubscriptionLifecycle.PROVISIONING]
 ):
+    service_id: str
     service_name: str
-    service_type: ClientSpeednType
-    flow_id: int
-    client_id: int
-    client_ports: ListOfClient_ports[OpticalDevicePortBlockProvisioning]
+    client_ports: ListOfClient_ports[TrxClientInterfaceBlockProvisioning]
     transport_channels: ListOfTransport_channels[
         OpticalTransportChannelBlockProvisioning
     ]
-    nms_uuid: UUIDstr | None = None
-
-    @computed_field
-    @property
-    def title(self) -> str:
-        return self.service_name
 
 
 class OpticalDigitalServiceBlock(
     OpticalDigitalServiceBlockProvisioning, lifecycle=[SubscriptionLifecycle.ACTIVE]
 ):
+    service_id: str
     service_name: str
-    service_type: ClientSpeednType
-    flow_id: int
-    client_id: int
-    client_ports: ListOfClient_ports[OpticalDevicePortBlock]
+    client_ports: ListOfClient_ports[TrxClientInterfaceBlock]
     transport_channels: ListOfTransport_channels[OpticalTransportChannelBlock]
-    nms_uuid: UUIDstr | None

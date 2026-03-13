@@ -11,9 +11,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 from abc import ABC, abstractmethod
-from enum import StrEnum
 from typing import Self
 
 from orchestrator.domain.base import ProductBlockModel
@@ -24,19 +22,8 @@ from orchestrator_extra_optical.utils.custom_types.fqdn import FQDN
 from orchestrator_extra_optical.utils.custom_types.ip_address import IPAddress
 
 
-class DeviceType(StrEnum):
-    """Device type based on its functionalities. Since chasses are modular, the type can change during device life."""
-
-    ROADM = "ROADM"
-    Amplifier = "Amplifier"
-    Transponder = "Transponder"
-    Transceiver = "Transceiver"
-    TransponderAndOADM = "Transponder+OADM"
-
-
-class OpticalDeviceBlockInactive(ProductBlockModel, ABC, product_block_name="OpticalDevice"):
+class RouterBlockInactive(ProductBlockModel, ABC, product_block_name="OpticalDummyRouter"):
     fqdn: FQDN | None = None
-    device_type: DeviceType | None = None
     loopback_ip: IPAddress | None = None
     management_ip: IPAddress | None = None
     irm_id: str | None
@@ -48,9 +35,8 @@ class OpticalDeviceBlockInactive(ProductBlockModel, ABC, product_block_name="Opt
         raise NotImplementedError(msg)  # FIXME
 
 
-class OpticalDeviceBlockProvisioning(OpticalDeviceBlockInactive, ABC, lifecycle=[SubscriptionLifecycle.PROVISIONING]):
+class RouterBlockProvisioning(RouterBlockInactive, ABC, lifecycle=[SubscriptionLifecycle.PROVISIONING]):
     fqdn: FQDN
-    device_type: DeviceType
 
     @model_validator(mode="after")
     def validate_ip(self) -> Self:
@@ -59,5 +45,5 @@ class OpticalDeviceBlockProvisioning(OpticalDeviceBlockInactive, ABC, lifecycle=
             raise ValueError(msg)
 
 
-class OpticalDeviceBlock(OpticalDeviceBlockProvisioning, ABC, lifecycle=[SubscriptionLifecycle.ACTIVE]):
-    device_type: DeviceType
+class RouterBlock(RouterBlockProvisioning, ABC, lifecycle=[SubscriptionLifecycle.ACTIVE]):
+    pass

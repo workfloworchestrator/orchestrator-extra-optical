@@ -18,48 +18,48 @@ from orchestrator.domain.base import ProductBlockModel
 from orchestrator.types import SI, SubscriptionLifecycle
 from pydantic import Field, computed_field
 
-from orchestrator_extra_optical.products.product_blocks.optical_dark_spectrum import (
-    DarkSpectrumBlock,
-    DarkSpectrumBlockInactive,
-    DarkSpectrumBlockProvisioning,
+from orchestrator_extra_optical.products.product_blocks.optical_ports import (
+    TrxLineInterfaceBlock,
+    TrxLineInterfaceBlockInactive,
+    TrxLineInterfaceBlockProvisioning,
 )
-from orchestrator_extra_optical.products.product_blocks.optical_device_port import (
-    OpticalDevicePortBlock,
-    OpticalDevicePortBlockInactive,
-    OpticalDevicePortBlockProvisioning,
+from orchestrator_extra_optical.products.product_blocks.optical_spectrum import (
+    OpticalSpectrumBlock,
+    OpticalSpectrumBlockInactive,
+    OpticalSpectrumBlockProvisioning,
 )
 
 LinePortList = Annotated[list[SI], Len(min_length=2, max_length=2)]
 
 
 class OpticalTransportChannelBlockInactive(ProductBlockModel, product_block_name="OpticalTransportChannel"):
-    transport_channel_id: int | None = None
+    channel_id: int | None = None
     central_frequency: int | None = None
     mode: str | None = None
-    line_ports: LinePortList[OpticalDevicePortBlockInactive] = Field(default_factory=list)
-    optical_spectrum: DarkSpectrumBlockInactive
+    line_ports: LinePortList[TrxLineInterfaceBlockInactive] = Field(default_factory=list)
+    spectrum: OpticalSpectrumBlockInactive
 
 
 class OpticalTransportChannelBlockProvisioning(
     OpticalTransportChannelBlockInactive, lifecycle=[SubscriptionLifecycle.PROVISIONING]
 ):
-    transport_channel_id: int
+    channel_id: int
     central_frequency: int
     mode: str
-    line_ports: LinePortList[OpticalDevicePortBlockProvisioning]
-    optical_spectrum: DarkSpectrumBlockProvisioning
+    line_ports: LinePortList[TrxLineInterfaceBlockProvisioning]
+    spectrum: OpticalSpectrumBlockProvisioning
 
     @computed_field
     @property
     def title(self) -> str:
         first_code = self.line_ports[0].optical_device.location.code.lower()
         second_code = self.line_ports[1].optical_device.location.code.lower()
-        return f"och{self.transport_channel_id}_{first_code}-{second_code}"
+        return f"och{self.channel_id}_{first_code}-{second_code}"
 
 
 class OpticalTransportChannelBlock(OpticalTransportChannelBlockProvisioning, lifecycle=[SubscriptionLifecycle.ACTIVE]):
-    transport_channel_id: int
+    channel_id: int
     central_frequency: int
     mode: str
-    line_ports: LinePortList[OpticalDevicePortBlock]
-    optical_spectrum: DarkSpectrumBlock
+    line_ports: LinePortList[TrxLineInterfaceBlock]
+    spectrum: OpticalSpectrumBlock

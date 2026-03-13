@@ -16,32 +16,30 @@ from enum import StrEnum
 from orchestrator.domain.base import SubscriptionModel
 from orchestrator.types import SubscriptionLifecycle
 
-from orchestrator_extra_optical.products.product_blocks.optical_device import (
-    OpticalDeviceBlock,
-    OpticalDeviceBlockInactive,
-    OpticalDeviceBlockProvisioning,
+from orchestrator_extra_optical.products.product_blocks.optical_coherent_pluggable import (
+    CoherentPluggableBlock,
+    CoherentPluggableBlockInactive,
+    CoherentPluggableBlockProvisioning,
 )
 
 
 class DeviceModel(StrEnum):
-    NOKIA_GROOVE_G30 = "Nokia Groove G30"
-    NOKIA_FLEXILS = "Nokia FlexILS"
-    NOKIA_GX_G42 = "Nokia GX G42"
+    NOKIA_400ZR_PLUS = "Nokia 400ZR+"
 
-class OpticalDeviceInactive(SubscriptionModel, is_base=True):
+class CoherentPluggable(SubscriptionModel, is_base=True):
     device_model = DeviceModel
-    optical_device: OpticalDeviceBlockInactive
+    transceiver: CoherentPluggableBlockInactive
 
 
-class OpticalDeviceProvisioning(
-    OpticalDeviceInactive, lifecycle=[SubscriptionLifecycle.PROVISIONING]
+class CoherentPluggableProvisioning(
+    CoherentPluggable, lifecycle=[SubscriptionLifecycle.PROVISIONING]
 ):
     device_model = DeviceModel
-    optical_device: OpticalDeviceBlockProvisioning
+    transceiver: CoherentPluggableBlockProvisioning
 
 
-class OpticalDevice(
-    OpticalDeviceProvisioning, lifecycle=[SubscriptionLifecycle.ACTIVE]
+class CoherentPluggable(
+    CoherentPluggableProvisioning, lifecycle=[SubscriptionLifecycle.ACTIVE]
 ):
     device_model = DeviceModel
-    optical_device: OpticalDeviceBlock
+    transceiver: CoherentPluggableBlock

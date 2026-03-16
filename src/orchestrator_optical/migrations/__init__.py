@@ -1,4 +1,4 @@
-import orchestrator_extra_optical
+import orchestrator_optical
 from alembic.config import Config
 from structlog import get_logger
 from os.path import dirname
@@ -20,7 +20,7 @@ def add_optical_module_migrations(config: Config) -> None:
 
     logger.debug(f"Alembic version locations after change: {config.get_main_option("version_locations")}")
 
-module_location = dirname(orchestrator_extra_optical.__file__)
+module_location = dirname(orchestrator_optical.__file__)
 migration_dir = "migrations"
 
 def alembic_cfg() -> Config:

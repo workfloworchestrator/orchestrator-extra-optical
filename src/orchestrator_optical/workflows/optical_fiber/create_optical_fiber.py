@@ -22,22 +22,22 @@ from pydantic import ConfigDict, Field, model_validator
 from pydantic_forms.types import FormGenerator, State, UUIDstr
 from structlog import get_logger
 
-from orchestrator_extra_optical.products.product_blocks.optical_device import DeviceType, Platform
-from orchestrator_extra_optical.products.product_blocks.optical_fiber import (
+from orchestrator_optical.products.product_blocks.optical_device import DeviceType, Platform
+from orchestrator_optical.products.product_blocks.optical_fiber import (
     ListOfFiberTypes,
     ListOfLengths,
 )
-from orchestrator_extra_optical.products.product_types.optical_device import OpticalDevice
-from orchestrator_extra_optical.products.product_types.optical_fiber import (
+from orchestrator_optical.products.product_types.optical_device import OpticalDevice
+from orchestrator_optical.products.product_types.optical_fiber import (
     OpticalFiberInactive,
     OpticalFiberProvisioning,
 )
-from orchestrator_extra_optical.products.services.optical_device import retrieve_ports_spectral_occupations
-from orchestrator_extra_optical.products.services.optical_device_port import (
+from orchestrator_optical.products.services.optical_device import retrieve_ports_spectral_occupations
+from orchestrator_optical.products.services.optical_device_port import (
     configure_termination_when_attaching_new_fiber,
 )
-from orchestrator_extra_optical.workflows.optical_device.shared import unused_optical_device_port_selector
-from orchestrator_extra_optical.workflows.shared import (
+from orchestrator_optical.workflows.optical_device.shared import unused_optical_device_port_selector
+from orchestrator_optical.workflows.shared import (
     active_subscription_selector,
     create_summary_form,
     subscription_instance_values_by_block_type_depending_on_instance_id,

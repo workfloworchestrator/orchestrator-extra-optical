@@ -15,11 +15,11 @@ import json
 import re
 from typing import Any, Literal
 
-from orchestrator_extra_optical.products.product_blocks.optical_device import OpticalDeviceBlock, Platform
-from orchestrator_extra_optical.products.product_blocks.optical_device_port import OpticalDevicePortBlock
-from orchestrator_extra_optical.products.services.optical_device import get_optical_device_client
-from orchestrator_extra_optical.services.infinera import TL1CommandDeniedError
-from orchestrator_extra_optical.utils.attributedispatch import attribute_dispatch_base, attributedispatch
+from orchestrator_optical.products.product_blocks.optical_device import OpticalDeviceBlock, Platform
+from orchestrator_optical.products.product_blocks.optical_device_port import OpticalDevicePortBlock
+from orchestrator_optical.products.services.optical_device import get_optical_device_client
+from orchestrator_optical.services.infinera import TL1CommandDeniedError
+from orchestrator_optical.utils.attributedispatch import attribute_dispatch_base, attributedispatch
 
 
 @attributedispatch("platform")

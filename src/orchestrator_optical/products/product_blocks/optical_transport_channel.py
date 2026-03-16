@@ -18,12 +18,12 @@ from orchestrator.domain.base import ProductBlockModel
 from orchestrator.types import SI, SubscriptionLifecycle
 from pydantic import Field, computed_field
 
-from orchestrator_extra_optical.products.product_blocks.optical_ports import (
+from orchestrator_optical.products.product_blocks.optical_ports import (
     TrxLineInterfaceBlock,
     TrxLineInterfaceBlockInactive,
     TrxLineInterfaceBlockProvisioning,
 )
-from orchestrator_extra_optical.products.product_blocks.optical_spectrum import (
+from orchestrator_optical.products.product_blocks.optical_spectrum import (
     OpticalSpectrumBlock,
     OpticalSpectrumBlockInactive,
     OpticalSpectrumBlockProvisioning,

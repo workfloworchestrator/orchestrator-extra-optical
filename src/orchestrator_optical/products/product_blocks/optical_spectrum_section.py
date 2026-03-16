@@ -17,7 +17,7 @@ from annotated_types import Len
 from orchestrator.domain.base import ProductBlockModel
 from orchestrator.types import SI, SubscriptionLifecycle
 
-from orchestrator_extra_optical.products.product_blocks.optical_ports import (
+from orchestrator_optical.products.product_blocks.optical_ports import (
     OlsAddDropPortBlock,
     OlsAddDropPortBlockInactive,
     OlsAddDropPortBlockProvisioning,

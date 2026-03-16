@@ -27,9 +27,9 @@ from orchestrator.workflow import StepList, begin, done, step, workflow
 from pydantic import Field, model_validator
 from pydantic_forms.types import FormGenerator, State, UUIDstr
 
-from orchestrator_extra_optical.products.product_blocks.optical_device import DeviceType, Platform, Vendor
-from orchestrator_extra_optical.utils.custom_types.ip_address import IPAddress
-from orchestrator_extra_optical.workflows.shared import subscriptions_by_product_type_and_instance_value
+from orchestrator_optical.products.product_blocks.optical_device import DeviceType, Platform, Vendor
+from orchestrator_optical.utils.custom_types.ip_address import IPAddress
+from orchestrator_optical.workflows.shared import subscriptions_by_product_type_and_instance_value
 
 achtung = (
     "This task will launch a sub-workflow for each device. "

@@ -17,12 +17,12 @@ from annotated_types import Len
 from orchestrator.domain.base import ProductBlockModel
 from orchestrator.types import SubscriptionLifecycle
 
-from orchestrator_extra_optical.products.product_blocks.optical_device import (
+from orchestrator_optical.products.product_blocks.optical_device import (
     OpticalDeviceBlock,
     OpticalDeviceBlockInactive,
     OpticalDeviceBlockProvisioning,
 )
-from orchestrator_extra_optical.utils.custom_types.frequencies import Passband
+from orchestrator_optical.utils.custom_types.frequencies import Passband
 
 # --- Types ---
 

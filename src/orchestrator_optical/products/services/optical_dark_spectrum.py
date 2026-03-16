@@ -14,27 +14,27 @@
 from time import sleep
 from typing import Any
 
-from orchestrator_extra_optical.products.product_blocks.optical_device import (
+from orchestrator_optical.products.product_blocks.optical_device import (
     DeviceType,
     OpticalDeviceBlock,
     Platform,
 )
-from orchestrator_extra_optical.products.product_blocks.optical_pipe import (
+from orchestrator_optical.products.product_blocks.optical_pipe import (
     OpticalDevicePortBlock,
 )
-from orchestrator_extra_optical.products.product_blocks.optical_spectrum_section import (
+from orchestrator_optical.products.product_blocks.optical_spectrum_section import (
     OpticalSpectrumSectionBlock,
 )
-from orchestrator_extra_optical.products.services.optical_device import get_optical_device_client
-from orchestrator_extra_optical.products.services.optical_device_port import (
+from orchestrator_optical.products.services.optical_device import get_optical_device_client
+from orchestrator_optical.products.services.optical_device_port import (
     flexils_check_port_is_in_manualmode2_else_set_it,
 )
-from orchestrator_extra_optical.services.infinera import FlexilsClient, TL1CommandDeniedError
-from orchestrator_extra_optical.utils.attributedispatch import (
+from orchestrator_optical.services.infinera import FlexilsClient, TL1CommandDeniedError
+from orchestrator_optical.utils.attributedispatch import (
     attribute_dispatch_base,
     attributedispatch,
 )
-from orchestrator_extra_optical.utils.custom_types.frequencies import Bandwidth, Frequency, Passband
+from orchestrator_optical.utils.custom_types.frequencies import Bandwidth, Frequency, Passband
 
 
 def _divide_path_into_omses(

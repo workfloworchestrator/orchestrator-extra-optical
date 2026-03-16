@@ -15,7 +15,7 @@
 from orchestrator.domain.base import ProductBlockModel
 from orchestrator.types import SubscriptionLifecycle
 
-from orchestrator_extra_optical.products.product_blocks.optical_dummy_router import (
+from orchestrator_optical.products.product_blocks.optical_dummy_router import (
     RouterBlock,
     RouterBlockInactive,
     RouterBlockProvisioning,

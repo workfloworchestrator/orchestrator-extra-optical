@@ -22,7 +22,7 @@ from products.product_blocks.optical_ports import (
     TrxClientInterfaceBlockProvisioning,
 )
 
-from orchestrator_extra_optical.products.product_blocks.optical_transport_channel import (
+from orchestrator_optical.products.product_blocks.optical_transport_channel import (
     OpticalTransportChannelBlock,
     OpticalTransportChannelBlockInactive,
     OpticalTransportChannelBlockProvisioning,

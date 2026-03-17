@@ -14,7 +14,7 @@
 from orchestrator.domain.base import SubscriptionModel
 from orchestrator.types import SubscriptionLifecycle
 
-from orchestrator_extra_optical.products.product_blocks.optical_leased_spectrum import (
+from orchestrator_optical.products.product_blocks.optical_leased_spectrum import (
     LeasedOpticalSpectrumBlock,
     LeasedOpticalSpectrumBlockInactive,
     LeasedOpticalSpectrumBlockProvisioning,

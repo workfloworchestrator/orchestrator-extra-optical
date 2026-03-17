@@ -17,12 +17,12 @@ from orchestrator.domain.base import ProductBlockModel
 from orchestrator.types import SI, SubscriptionLifecycle
 from pydantic import Field
 
-from orchestrator_extra_optical.products.product_blocks.optical_spectrum_section import (
+from orchestrator_optical.products.product_blocks.optical_spectrum_section import (
     OpticalSpectrumSectionBlock,
     OpticalSpectrumSectionBlockInactive,
     OpticalSpectrumSectionBlockProvisioning,
 )
-from orchestrator_extra_optical.utils.custom_types.frequencies import Passband
+from orchestrator_optical.utils.custom_types.frequencies import Passband
 
 SectionsList = Annotated[
     list[SI],

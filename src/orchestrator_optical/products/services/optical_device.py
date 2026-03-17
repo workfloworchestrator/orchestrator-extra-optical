@@ -20,20 +20,20 @@ from typing import Any, ClassVar
 from orchestrator.domain.base import ProductBlockModel
 from pydantic_forms.types import UUIDstr
 
-from orchestrator_extra_optical.products.product_blocks.optical_device import (
+from orchestrator_optical.products.product_blocks.optical_device import (
     OpticalDeviceBlock,
     OpticalDeviceBlockProvisioning,
     Platform,
     Vendor,
 )
-from orchestrator_extra_optical.services.infinera import FlexilsClient, G30Client, G42Client, tnms_client
-from orchestrator_extra_optical.utils.attributedispatch import (
+from orchestrator_optical.services.infinera import FlexilsClient, G30Client, G42Client, tnms_client
+from orchestrator_optical.utils.attributedispatch import (
     attribute_dispatch_base,
     attributedispatch,
 )
-from orchestrator_extra_optical.utils.custom_types.frequencies import available_to_used_passbands
-from orchestrator_extra_optical.utils.custom_types.ip_address import IPAddress
-from orchestrator_extra_optical.workflows.shared import subscription_instances_by_block_type_and_resource_value
+from orchestrator_optical.utils.custom_types.frequencies import available_to_used_passbands
+from orchestrator_optical.utils.custom_types.ip_address import IPAddress
+from orchestrator_optical.workflows.shared import subscription_instances_by_block_type_and_resource_value
 
 logger = logging.getLogger(__name__)
 

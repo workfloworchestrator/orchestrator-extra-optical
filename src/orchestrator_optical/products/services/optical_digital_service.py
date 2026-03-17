@@ -16,21 +16,21 @@ from typing import Any, Literal
 
 from requests.exceptions import HTTPError
 
-from orchestrator_extra_optical.products.product_blocks.optical_device import (
+from orchestrator_optical.products.product_blocks.optical_device import (
     OpticalDeviceBlock,
     Platform,
 )
-from orchestrator_extra_optical.products.product_blocks.optical_digital_service import (
+from orchestrator_optical.products.product_blocks.optical_digital_service import (
     ClientSpeednType,
 )
-from orchestrator_extra_optical.products.services.optical_device import get_optical_device_client
-from orchestrator_extra_optical.services.infinera import G42Client
-from orchestrator_extra_optical.utils.attributedispatch import (
+from orchestrator_optical.products.services.optical_device import get_optical_device_client
+from orchestrator_optical.services.infinera import G42Client
+from orchestrator_optical.utils.attributedispatch import (
     attribute_dispatch_base,
     attributedispatch,
 )
-from orchestrator_extra_optical.utils.custom_types.frequencies import Frequency
-from orchestrator_extra_optical.utils.dictdiff import compare_dicts
+from orchestrator_optical.utils.custom_types.frequencies import Frequency
+from orchestrator_optical.utils.dictdiff import compare_dicts
 
 
 @attributedispatch("platform")

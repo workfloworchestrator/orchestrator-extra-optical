@@ -961,7 +961,7 @@ wheels = [
 ]
 
 [[package]]
-name = "orchestrator-extra-optical"
+name = "orchestrator_optical"
 version = "0.0.1rc1"
 source = { editable = "." }
 dependencies = [

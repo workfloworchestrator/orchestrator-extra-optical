@@ -1,5 +1,5 @@
 [project]
-name = "orchestrator-extra-optical"
+name = "orchestrator-optical"
 version = "0.0.1rc1"
 readme = "README.md"
 description = "Addon module for Workflow Orchestrator installations that includes product models for optical equipment."
@@ -67,9 +67,11 @@ build-backend = "uv_build"
 prerelease = "if-necessary"
 
 [tool.uv.build-backend]
-module-name = "orchestrator_extra_optical"
-module-root = ""
-source-include = ["orchestrator_extra_optical/migrations/alembic.ini"]
+# TODO: We want to move to a namespace package, but that depens on upstream changes in orchestrator-core.
+# https://github.com/workfloworchestrator/orchestrator-core/issues/1471
+module-name = "orchestrator_optical"
+namespace = false
+source-include = ["orchestrator_optical/migrations/alembic.ini"]
 
 [tool.ty.src]
 exclude = ["docs"]
@@ -163,7 +165,7 @@ convention = "google"
 ban-relative-imports = "all"
 
 [tool.ruff.lint.per-file-ignores]
-"orchestrator_extra_optical/workflows/*" = ["PLR0917", "PLR0914"]
+"orchestrator_optical/workflows/*" = ["PLR0917", "PLR0914"]
 "test/*" = ["ARG001", "D", "S101", "PLR2004", "PLR0917", "PLR0914", "PLC0415", "PLC2701"]
 
 [tool.ruff.lint.isort]
@@ -172,14 +174,14 @@ known-first-party = ["test", "docs"]
 
 [tool.pytest.ini_options]
 markers = ["noautofixt"]
-filterwarnings = ["ignore", "default:::orchestrator_extra_optical"]
+filterwarnings = ["ignore"]
 asyncio_default_fixture_loop_scope = "function"
 testpaths = ["test"]
 
 [tool.pytest_env]
-TRANSLATIONS_DIR = "orchestrator_extra_optical/translations"
+TRANSLATIONS_DIR = "orchestrator_optical/translations"
 
 [tool.coverage.run]
 branch = true
 fail_under = 90
-omit = ["orchestrator_extra_optical/migrations/*"]
+omit = ["orchestrator_optical/migrations/*"]

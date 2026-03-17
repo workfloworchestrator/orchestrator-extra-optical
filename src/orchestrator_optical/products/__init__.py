@@ -15,10 +15,10 @@
 from orchestrator.domain import SUBSCRIPTION_MODEL_REGISTRY
 from pydantic_forms.types import strEnum
 
-from orchestrator_extra_optical.products.product_types.optical_device import OpticalDevice
-from orchestrator_extra_optical.products.product_types.optical_digital_service import OpticalDigitalService
-from orchestrator_extra_optical.products.product_types.optical_pipe import OpticalPipe, OpticalPipeType
-from orchestrator_extra_optical.products.product_types.optical_dark_spectrum import OpticalDarkSpectrum
+from orchestrator_optical.products.product_types.optical_device import OpticalDevice
+from orchestrator_optical.products.product_types.optical_digital_service import OpticalDigitalService
+from orchestrator_optical.products.product_types.optical_pipe import OpticalPipe, OpticalPipeType
+from orchestrator_optical.products.product_types.optical_dark_spectrum import OpticalDarkSpectrum
 
 
 class ProductName(strEnum):

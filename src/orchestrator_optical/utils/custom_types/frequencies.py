@@ -47,7 +47,7 @@ Passband = Annotated[
     tuple[Frequency, Frequency],
     BeforeValidator(parse_if_string),
     AfterValidator(validate_passband_order),
-    Doc("A passband, modeled as a list of two frequencies."),
+    Doc("A passband, modeled as a tuple of two frequencies."),
 ]
 
 

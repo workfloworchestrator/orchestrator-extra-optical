@@ -33,5 +33,5 @@ def validate_fqdn_prefix(value: str) -> str:
     return value
 
 
-FQDN = Annotated[str, AfterValidator(validate_fqdn)]
-FQDNPrefix = Annotated[str, AfterValidator(validate_fqdn_prefix)]
+Fqdn = Annotated[str, AfterValidator(validate_fqdn)]
+FqdnPrefix = Annotated[str, AfterValidator(validate_fqdn_prefix)]

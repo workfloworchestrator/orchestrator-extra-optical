@@ -1,21 +1,22 @@
 """Module that defines the contract for packet nodes hosting coherent pluggables."""
 
+from collections.abc import Sequence
 from typing import Protocol, runtime_checkable
 
-from orchestrator_optical.products.product_types.optical_nodes.base import LocationContract
+from orchestrator_optical.protocols.location import LocationProtocol
 from orchestrator_optical.utils.custom_types.fqdn import Fqdn
 from orchestrator_optical.utils.custom_types.ip_address import IPAddress
 
 
 @runtime_checkable
-class PacketNodeContract(Protocol):
+class PacketNodeProtocol(Protocol):
     """Defines the Protocol (contract) of any packet node hosting a coherent pluggable.
 
     The optical orchestrator workflows will rely on these.
     """
 
     @property
-    def management_ips(self) -> list[IPAddress]:
+    def management_ips(self) -> Sequence[IPAddress]:
         """List of management IP addresses of the host device."""
         ...
 
@@ -40,6 +41,6 @@ class PacketNodeContract(Protocol):
         ...
 
     @property
-    def location(self) -> LocationContract:
+    def location(self) -> LocationProtocol:
         """The location where the node is housed."""
         ...

@@ -3,8 +3,7 @@
 from orchestrator.domain.base import ProductBlockModel
 from orchestrator.types import SubscriptionLifecycle
 
-from orchestrator_optical.contracts.packet_node import PacketNodeContract
-from orchestrator_optical.mixins.coherent_pluggable import (
+from orchestrator_optical.protocols.coherent_pluggable import (
     CoherentPluggableMixin,
     CoherentPluggableMixinInactive,
     CoherentPluggableMixinProvisioning,

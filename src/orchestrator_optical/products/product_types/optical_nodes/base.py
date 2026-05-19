@@ -13,7 +13,7 @@ from orchestrator_optical.products.product_blocks.optical_nodes.base import (
 # --- Enums ---
 
 
-class VendorModel(StrEnum):
+class VendorPlatform(StrEnum):
     """Enumerate supported optical device vendor and models."""
 
     NOKIA_GROOVE_G30 = "Nokia Groove G30"
@@ -32,5 +32,5 @@ class AbstractOpticalNodeSubscriptionInactive(
 ):
     """Abstract base model for an optical node subscription in the INACTIVE state."""
 
-    vendor_model: VendorModel
+    vendor_platform: VendorPlatform
     node: AbstractOpticalNodeBlockInactive

@@ -20,8 +20,7 @@ T = TypeVar("T")
 
 
 def attributedispatch(attr_name: str, func: Callable | None = None):
-    """
-    A decorator that enables dynamic function dispatching based on a specific attribute's value.
+    """A decorator that enables dynamic function dispatching based on a specific attribute's value.
 
     :param attr_name: The name of the attribute to use for dispatching
     :param func: The function to be decorated (optional)
@@ -35,8 +34,7 @@ def attributedispatch(attr_name: str, func: Callable | None = None):
     registry = {}
 
     def dispatch(obj):
-        """
-        Core dispatching logic to find the appropriate implementation.
+        """Core dispatching logic to find the appropriate implementation.
 
         :param obj: The object being dispatched
         :return: The most appropriate implementation function
@@ -44,7 +42,8 @@ def attributedispatch(attr_name: str, func: Callable | None = None):
         """
         # Verify that the object has the specified attribute
         if not hasattr(obj, attr_name):
-            raise AttributeError(f"Object does not have attribute '{attr_name}'")
+            msg = f"Object does not have attribute '{attr_name}'"
+            raise AttributeError(msg)
 
         # Extract the value of the specified attribute
         attr_value = getattr(obj, attr_name)
@@ -57,8 +56,7 @@ def attributedispatch(attr_name: str, func: Callable | None = None):
         return func
 
     def register(attr_value, implementation=None):
-        """
-        Register a specific implementation for a given attribute value.
+        """Register a specific implementation for a given attribute value.
 
         :param attr_value: The attribute value to match
         :param implementation: The function to use for this attribute value
@@ -73,8 +71,7 @@ def attributedispatch(attr_name: str, func: Callable | None = None):
         return implementation
 
     def wrapper(*args, **kwargs):
-        """
-        The main wrapper function that orchestrates the dispatching.
+        """The main wrapper function that orchestrates the dispatching.
 
         :param args: Positional arguments
         :param kwargs: Keyword arguments
@@ -83,7 +80,8 @@ def attributedispatch(attr_name: str, func: Callable | None = None):
         """
         # Ensure at least one argument is passed
         if not args:
-            raise TypeError(f"{func.__name__} requires at least 1 positional argument")
+            msg = f"{func.__name__} requires at least 1 positional argument"
+            raise TypeError(msg)
 
         # Dispatch based on the first argument's attribute
         try:
@@ -91,11 +89,12 @@ def attributedispatch(attr_name: str, func: Callable | None = None):
             return implementation(*args, **kwargs)
         except Exception as e:
             # Enhanced error handling to provide more context
-            raise TypeError(
+            msg = (
                 f"Error in {func.__name__} "
                 f"with {attr_name}={getattr(args[0], attr_name, 'UNKNOWN')}. "
                 f"Original error: {e!s}"
-            ) from e
+            )
+            raise TypeError(msg) from e
 
     # Attach additional methods and metadata to the wrapper
     wrapper.register = register
@@ -108,11 +107,8 @@ def attributedispatch(attr_name: str, func: Callable | None = None):
     return wrapper
 
 
-def attribute_dispatch_base(
-    func: Callable, attr_name: str, attr_value: Any
-) -> NoReturn:
-    """
-    Raise a TypeError with information about supported attribute values.
+def attribute_dispatch_base(func: Callable, attr_name: str, attr_value: Any) -> NoReturn:
+    """Raise a TypeError with information about supported attribute values.
 
     Args:
         func: The function being dispatched
@@ -124,7 +120,8 @@ def attribute_dispatch_base(
     """
     registry = func.registry
     supported_values = ", ".join(registry.keys())
-    raise TypeError(
+    msg = (
         f"`{func.__name__}` called for unsupported value '{attr_value}' for attribute '{attr_name}'. "
         f"Supported values are: {supported_values}"
     )
+    raise TypeError(msg)

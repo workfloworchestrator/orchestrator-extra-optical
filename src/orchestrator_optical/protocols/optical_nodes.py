@@ -4,7 +4,7 @@ from collections.abc import Sequence
 from enum import StrEnum
 from typing import Literal, Protocol, runtime_checkable
 
-from orchestrator_optical.contracts.location import LocationContract
+from orchestrator_optical.protocols.location import LocationProtocol
 from orchestrator_optical.utils.custom_types.fqdn import Fqdn
 from orchestrator_optical.utils.custom_types.ip_address import IPAddress
 
@@ -19,7 +19,7 @@ class NodeRole(StrEnum):
 
 
 @runtime_checkable
-class OpticalNodeContract(Protocol):
+class OpticalNodeProtocol(Protocol):
     """Base contract for any optical node."""
 
     fqdn: Fqdn
@@ -28,23 +28,18 @@ class OpticalNodeContract(Protocol):
     sw_version: str
 
     @property
-    def vendor(self) -> str:
-        """The vendor of the node."""
+    def vendor_and_platform(self) -> str:
+        """The vendor and platform of the node, e.g. 'Nokia FlexILS'."""
         ...
 
     @property
-    def platform(self) -> str:
-        """The platform of the node."""
-        ...
-
-    @property
-    def location(self) -> LocationContract:
+    def location(self) -> LocationProtocol:
         """The location where the node is housed."""
         ...
 
 
 @runtime_checkable
-class NokiaFlexIlsContract(OpticalNodeContract, Protocol):
+class NokiaFlexIlsProtocol(OpticalNodeProtocol, Protocol):
     """Specific contract for Nokia FlexILS nodes."""
 
     role: Literal[NodeRole.ROADM, NodeRole.AMPLIFIER]

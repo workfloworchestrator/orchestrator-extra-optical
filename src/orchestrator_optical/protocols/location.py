@@ -1,20 +1,13 @@
 """Module that defines the contract for location-related data used in optical nodes."""
 
-from typing import Annotated, Protocol, runtime_checkable
-
-from annotated_types import Len
+from typing import Protocol, runtime_checkable
 
 from orchestrator_optical.utils.custom_types.coordinates import LatitudeCoordinate, LongitudeCoordinate
-from orchestrator_optical.utils.custom_types.ip_address import IPAddress
-
-IpAddressesList = Annotated[
-    list[IPAddress], Len(min_length=1, max_length=10), "List of the management IP addresses of the device."
-]
 
 
 @runtime_checkable
-class LocationContract(Protocol):
-    """Defines the Protocol (contract) of any housing used for Optical Nodes.
+class LocationProtocol(Protocol):
+    """Defines the Protocol (contract) of any housing used for Network Nodes.
 
     The optical orchestrator workflows will rely on these.
     """

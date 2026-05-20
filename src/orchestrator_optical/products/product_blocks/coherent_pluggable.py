@@ -1,42 +1,18 @@
-"""Ready-to-use WFO Product Block models for coherent pluggables."""
-
-from orchestrator.domain.base import ProductBlockModel
-from orchestrator.types import SubscriptionLifecycle
-
-from orchestrator_optical.protocols.coherent_pluggable import (
-    CoherentPluggableMixin,
-    CoherentPluggableMixinInactive,
-    CoherentPluggableMixinProvisioning,
+from orchestrator_optical.abstracts.product_blocks.coherent_pluggable import (
+    AbstractCoherentPluggableBlock,
+    AbstractCoherentPluggableBlockInactive,
+    AbstractCoherentPluggableBlockProvisioning,
 )
-
-# --- Standard Product Blocks ---
-
-
-class CoherentPluggableBlockInactive(
-    ProductBlockModel, CoherentPluggableMixinInactive, product_block_name="CoherentPluggable"
-):
-    """base model for a coherent pluggable block in the INACTIVE state.
-
-    This block represents the basic properties of a coherent pluggable before it is fully provisioned.
-    """
-
-    host_node: "PacketNodeBlockInactive" | None
+from orchestrator_optical.products.product_blocks.deleteme_packetnode import ReplaceMePacketNode
 
 
-class CoherentPluggableBlockProvisioning(
-    CoherentPluggableBlockInactive, CoherentPluggableMixinProvisioning, lifecycle=[SubscriptionLifecycle.PROVISIONING]
-):
-    """base model for a coherent pluggable block in the PROVISIONING state.
-
-    This block ensures that all necessary fields are populated during the provisioning phase.
-    """
-
-    host_node: "PacketNodeBlockProvisioning"
+class CoherentPluggableInactive(AbstractCoherentPluggableBlockInactive, product_block_name="CoherentPluggable"):
+    host_node: ReplaceMePacketNode | None = None
 
 
-class CoherentPluggableBlockActive(
-    CoherentPluggableBlockProvisioning, CoherentPluggableMixin, lifecycle=[SubscriptionLifecycle.ACTIVE]
-):
-    """base model for a coherent pluggable block in the ACTIVE state."""
+class CoherentPluggableProvisionig(CoherentPluggableInactive, AbstractCoherentPluggableBlockProvisioning):
+    host_node: ReplaceMePacketNode
 
-    host_node: "PacketNodeBlock"
+
+class CoherentPluggable(CoherentPluggableProvisionig, AbstractCoherentPluggableBlock):
+    host_node: ReplaceMePacketNode

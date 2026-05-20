@@ -1,0 +1,1 @@
+"""Abstract optical domain models."""

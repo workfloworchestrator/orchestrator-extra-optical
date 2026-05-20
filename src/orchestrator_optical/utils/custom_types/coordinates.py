@@ -1,4 +1,3 @@
-
 """Custom coordinate types for latitude and longitude. Copied from GEANT Service Orchestrator project."""
 
 import re

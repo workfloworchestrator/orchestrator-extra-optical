@@ -1,45 +1,39 @@
 """Module for Optical Spectrum product blocks."""
 
-from abc import ABC
-from typing import Annotated
-
-from annotated_types import Len
-from orchestrator.domain.base import ProductBlockModel
-from orchestrator.types import SI, SubscriptionLifecycle
-
-from orchestrator_optical.products.product_blocks.optical_spectrum_section import (
-    AbstractOpticalSpectrumSectionBlock,
-    AbstractOpticalSpectrumSectionBlockInactive,
-    AbstractOpticalSpectrumSectionBlockProvisioning,
+from orchestrator_optical.abstracts.product_blocks.optical_spectrum import (
+    AbstractOpticalSpectrumBlock,
+    AbstractOpticalSpectrumBlockInactive,
+    AbstractOpticalSpectrumBlockProvisioning,
+    OpticalSpectrumSectionsList,
 )
-from orchestrator_optical.products.product_blocks.utils.custom_types.frequencies import Passband
+from orchestrator_optical.products.product_blocks.spectrum_section import (
+    OpticalSpectrumSection,
+    OpticalSpectrumSectionInactive,
+    OpticalSpectrumSectionProvisioning,
+)
 
-OpticalSpectrumSectionsList = Annotated[list[SI], Len(min_length=0, max_length=9)]
-
-
-class AbstractOpticalSpectrumBlockInactive(ABC, ProductBlockModel):
-    """Abstract base class for inactive Optical Spectrum product blocks."""
-
-    spectrum_name: str | None = None
-    passband: Passband | None = None
-    sections: OpticalSpectrumSectionsList[AbstractOpticalSpectrumSectionBlockInactive]
+# --- Inactive ---
 
 
-class AbstractOpticalSpectrumBlockProvisioning(
-    ABC, AbstractOpticalSpectrumBlockInactive, lifecycle=[SubscriptionLifecycle.PROVISIONING]
-):
-    """Abstract base class for provisioning Optical Spectrum product blocks."""
+class OpticalSpectrumInactive(AbstractOpticalSpectrumBlockInactive, product_block_name="OpticalSpectrum"):
+    """Inactive state of the Optical Spectrum product block."""
 
-    spectrum_name: str | None = None
-    passband: Passband
-    sections: OpticalSpectrumSectionsList[AbstractOpticalSpectrumSectionBlockProvisioning]
+    sections: OpticalSpectrumSectionsList[OpticalSpectrumSectionInactive]
 
 
-class AbstractOpticalSpectrumBlock(
-    ABC, AbstractOpticalSpectrumBlockProvisioning, lifecycle=[SubscriptionLifecycle.ACTIVE]
-):
-    """Abstract base class for active Optical Spectrum product blocks."""
+# --- Provisioning ---
 
-    spectrum_name: str
-    passband: Passband
-    sections: OpticalSpectrumSectionsList[AbstractOpticalSpectrumSectionBlock]
+
+class OpticalSpectrumProvisioning(OpticalSpectrumInactive, AbstractOpticalSpectrumBlockProvisioning):
+    """Provisioning state of the Optical Spectrum product block."""
+
+    sections: OpticalSpectrumSectionsList[OpticalSpectrumSectionProvisioning]
+
+
+# --- Active ---
+
+
+class OpticalSpectrum(OpticalSpectrumProvisioning, AbstractOpticalSpectrumBlock):
+    """Active state of the Optical Spectrum product block."""
+
+    sections: OpticalSpectrumSectionsList[OpticalSpectrumSection]

@@ -1,0 +1,50 @@
+"""Module for OpticalSpectrumSection product blocks."""
+
+from orchestrator_optical.abstracts.product_blocks.spectrum_section import (
+    AbstractOpticalSpectrumSectionBlock,
+    AbstractOpticalSpectrumSectionBlockInactive,
+    AbstractOpticalSpectrumSectionBlockProvisioning,
+    AddDropPorts,
+    ExpressPorts,
+)
+from orchestrator_optical.products.product_blocks.optical_port import (
+    OlsAddDropPort,
+    OlsAddDropPortInactive,
+    OlsAddDropPortProvisioning,
+    OlsLinePort,
+    OlsLinePortInactive,
+    OlsLinePortProvisioning,
+)
+
+# --- Inactive ---
+
+
+class OpticalSpectrumSectionInactive(
+    AbstractOpticalSpectrumSectionBlockInactive, product_block_name="OpticalSpectrumSection"
+):
+    """Inactive state of an OpticalSpectrumSection product block."""
+
+    add_drop_ports: AddDropPorts[OlsAddDropPortInactive]
+    express_ports: ExpressPorts[OlsLinePortInactive]
+
+
+# --- Provisioning ---
+
+
+class OpticalSpectrumSectionProvisioning(
+    OpticalSpectrumSectionInactive, AbstractOpticalSpectrumSectionBlockProvisioning
+):
+    """Provisioning state of an OpticalSpectrumSection product block."""
+
+    add_drop_ports: AddDropPorts[OlsAddDropPortProvisioning]
+    express_ports: ExpressPorts[OlsLinePortProvisioning]
+
+
+# --- Active ---
+
+
+class OpticalSpectrumSection(OpticalSpectrumSectionProvisioning, AbstractOpticalSpectrumSectionBlock):
+    """Active state of an OpticalSpectrumSection product block."""
+
+    add_drop_ports: AddDropPorts[OlsAddDropPort]
+    express_ports: ExpressPorts[OlsLinePort]

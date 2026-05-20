@@ -26,18 +26,13 @@ class PacketNodeProtocol(Protocol):
         ...
 
     @property
-    def vendor(self) -> str | None:
-        """The vendor of the host device."""
-        ...
-
-    @property
-    def model(self) -> str | None:
-        """The model of the host device."""
+    def vendor_platform(self) -> str | None:
+        """The vendor and platform of the host device, e.g. 'Nokia 7750 SR'."""
         ...
 
     @property
     def sw_version(self) -> str | None:
-        """The software version of the host device."""
+        """The software version of the host device, e.g. '26.3'."""
         ...
 
     @property

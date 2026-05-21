@@ -1,15 +1,4 @@
-# Copyright 2025 GARR.
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+# 
 
 import functools
 import types
@@ -19,34 +8,53 @@ from typing import Any, NoReturn, TypeVar
 T = TypeVar("T")
 
 
-def attributedispatch(attr_name: str, func: Callable | None = None):
-    """A decorator that enables dynamic function dispatching based on a specific attribute's value.
+def attributedispatch(*attr_names: str, func: Callable[..., Any] | None = None) -> Any:  # noqa: PLR0915
+    """Enables dynamic function dispatching based on one or more attributes' values.
 
-    :param attr_name: The name of the attribute to use for dispatching
+    :param attr_names: One or more attribute names to use for dispatching
     :param func: The function to be decorated (optional)
     :return: A wrapper function with enhanced dispatching capabilities
     """
-    # Allow the decorator to be used with or without parentheses
+    if not attr_names:
+        msg = "attributedispatch requires at least one attribute name"
+        raise TypeError(msg)
+
+    # If the last argument is a callable and func is not set, treat it as the function
+    # being decorated (e.g., when called as attributedispatch("attr", my_func))
+    if func is None and len(attr_names) > 0 and callable(attr_names[-1]):
+        func = attr_names[-1]
+        attr_names = attr_names[:-1]
+
+    # If no implementation is passed, return a decorator
     if func is None:
-        return lambda f: attributedispatch(attr_name, f)
+        return lambda f: attributedispatch(*attr_names, func=f)
+
+    # Validate that we have at least one attribute name remaining
+    if not attr_names:
+        msg = "attributedispatch requires at least one attribute name"
+        raise TypeError(msg)
 
     # Create registries to manage different function implementations
-    registry = {}
+    registry: dict[Any, Callable[..., Any]] = {}
 
-    def dispatch(obj):
+    def dispatch(obj: Any) -> Callable[..., Any]:
         """Core dispatching logic to find the appropriate implementation.
 
         :param obj: The object being dispatched
         :return: The most appropriate implementation function
-        :raises AttributeError: If the specified attribute doesn't exist
+        :raises AttributeError: If any of the specified attributes do not exist
         """
-        # Verify that the object has the specified attribute
-        if not hasattr(obj, attr_name):
-            msg = f"Object does not have attribute '{attr_name}'"
+        # Verify that the object has all specified attributes
+        missing_attrs = [name for name in attr_names if not hasattr(obj, name)]
+        if missing_attrs:
+            msg = f"Object {obj!r} does not have attribute(s): {', '.join(repr(name) for name in missing_attrs)}"
             raise AttributeError(msg)
 
-        # Extract the value of the specified attribute
-        attr_value = getattr(obj, attr_name)
+        # Extract the value of the specified attribute(s)
+        if len(attr_names) == 1:
+            attr_value = getattr(obj, attr_names[0])
+        else:
+            attr_value = tuple(getattr(obj, name) for name in attr_names)
 
         # Look for an exact match of the attribute value in our registry
         if attr_value in registry:
@@ -55,22 +63,38 @@ def attributedispatch(attr_name: str, func: Callable | None = None):
         # If no specific implementation is found, fall back to the default implementation
         return func
 
-    def register(attr_value, implementation=None):
-        """Register a specific implementation for a given attribute value.
+    def register(*attr_values: Any, implementation: Callable[..., Any] | None = None) -> Any:
+        """Register a specific implementation for a given attribute value or value combination.
 
-        :param attr_value: The attribute value to match
-        :param implementation: The function to use for this attribute value
+        :param attr_values: The attribute value(s) to match
+        :param implementation: The function to use for this attribute value(s)
         :return: Decorator or registered function
         """
-        # If no implementation is provided, return a lambda
+        # If no implementation is provided, check if the last value is the callable
         if implementation is None:
-            return lambda f: register(attr_value, f)
+            if attr_values and callable(attr_values[-1]):
+                implementation = attr_values[-1]
+                attr_values = attr_values[:-1]
+            else:
+                return lambda f: register(*attr_values, implementation=f)
+
+        # Determine registry key format:
+        # If dispatching on a single attribute, keep the key as a single value for backwards compatibility.
+        # If dispatching on multiple attributes, use a tuple of values.
+        if len(attr_names) == 1 and len(attr_values) == 1:
+            key = attr_values[0]
+        elif len(attr_names) > 1 and len(attr_values) == 1 and isinstance(attr_values[0], tuple):
+            # Support register((val1, val2)) in addition to register(val1, val2)
+            key = attr_values[0]
+        else:
+            key = attr_values
 
         # Store the implementation in the registry
-        registry[attr_value] = implementation
+        registry[key] = implementation
         return implementation
 
-    def wrapper(*args, **kwargs):
+    @functools.wraps(func)
+    def wrapper(*args: Any, **kwargs: Any) -> Any:
         """The main wrapper function that orchestrates the dispatching.
 
         :param args: Positional arguments
@@ -83,43 +107,42 @@ def attributedispatch(attr_name: str, func: Callable | None = None):
             msg = f"{func.__name__} requires at least 1 positional argument"
             raise TypeError(msg)
 
-        # Dispatch based on the first argument's attribute
+        # Guard only the dispatch resolution lookup
         try:
-            implementation = dispatch(args[0])
-            return implementation(*args, **kwargs)
+            target_func = dispatch(args[0])
         except Exception as e:
-            # Enhanced error handling to provide more context
+            display_names = attr_names[0] if len(attr_names) == 1 else attr_names
             msg = (
-                f"Error in {func.__name__} "
-                f"with {attr_name}={getattr(args[0], attr_name, 'UNKNOWN')}. "
-                f"Original error: {e!s}"
+                f"Dispatch lookup failed for {func.__name__} on attribute(s) {display_names!r}. "
+                f"Error: {e}"
             )
-            raise TypeError(msg) from e
+            raise TypeError(
+                msg
+            ) from e
 
-    # Attach additional methods and metadata to the wrapper
+        # Execute the resolved target function directly to preserve its traceback
+        return target_func(*args, **kwargs)
+
     wrapper.register = register
     wrapper.dispatch = dispatch
     wrapper.registry = types.MappingProxyType(registry)
 
-    # Preserve the metadata of the original function
-    functools.update_wrapper(wrapper, func)
-
     return wrapper
 
 
-def attribute_dispatch_base(func: Callable, attr_name: str, attr_value: Any) -> NoReturn:
+def attribute_dispatch_base(func: Callable, attr_name: str | tuple[str, ...] | list[str], attr_value: Any) -> NoReturn:
     """Raise a TypeError with information about supported attribute values.
 
     Args:
         func: The function being dispatched
-        attr_name: Name of the attribute being dispatched on
-        attr_value: The unsupported attribute value that was encountered
+        attr_name: Name of the attribute(s) being dispatched on
+        attr_value: The unsupported attribute value(s) that was encountered
 
     Raises:
         TypeError: Always, with details about supported values
     """
     registry = func.registry
-    supported_values = ", ".join(registry.keys())
+    supported_values = ", ".join(str(k) for k in registry)
     msg = (
         f"`{func.__name__}` called for unsupported value '{attr_value}' for attribute '{attr_name}'. "
         f"Supported values are: {supported_values}"

@@ -1,0 +1,26 @@
+# copier.yaml
+_min_copier_version: "9.0.0"
+
+# Exclude the library source code and dev files from being templated into the downstream repo
+_exclude:
+  - "src/"
+  - "test/"
+  - "docs/"
+  - "pyproject.toml"
+  - "README.md"
+  - ".github/"
+  - "uv.lock"
+
+_subdirectory: "src/orchestrator_optical/templates"
+
+# --- Prompts ---
+
+module_name:
+  type: str
+  help: "The directory name where your optical product models and workflows will live (e.g., myorg_optical)"
+  default: "myorg_optical"
+
+import_base_path:
+  type: str
+  help: "The base Python import path for this module in your repository (e.g., myorg_optical)"
+  default: "myorg_optical"

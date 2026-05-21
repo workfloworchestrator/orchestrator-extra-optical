@@ -1,13 +1,14 @@
 """Module for OpticalSpectrumSection product blocks."""
 
-from orchestrator_optical.abstracts.product_blocks.spectrum_section import (
+from orchestrator_optical.abstracts.product_blocks.optical_spectrum_section import (
     AbstractOpticalSpectrumSectionBlock,
     AbstractOpticalSpectrumSectionBlockInactive,
     AbstractOpticalSpectrumSectionBlockProvisioning,
     AddDropPorts,
     ExpressPorts,
 )
-from orchestrator_optical.products.product_blocks.optical_port import (
+
+from {{import_base_path}}.products.products_blocks.optical_port import (
     OlsAddDropPort,
     OlsAddDropPortInactive,
     OlsAddDropPortProvisioning,
@@ -48,3 +49,5 @@ class OpticalSpectrumSection(OpticalSpectrumSectionProvisioning, AbstractOptical
 
     add_drop_ports: AddDropPorts[OlsAddDropPort]
     express_ports: ExpressPorts[OlsLinePort]
+
+

@@ -1,6 +1,6 @@
 """Module for Optical Digital Service product blocks."""
 
-from typing import Annotated
+from typing import Annotated  # noqa: I001
 
 from pydantic import Field
 
@@ -11,17 +11,17 @@ from orchestrator_optical.abstracts.product_blocks.optical_digital_service impor
     ClientPortsList,
     TransportChannelsList,
 )
-from orchestrator_optical.products.product_blocks.coherent_pluggable import (
+from {{import_base_path}}.products.products_blocks.optical_coherent_pluggable import (
     CoherentPluggable,
     CoherentPluggableInactive,
     CoherentPluggableProvisioning,
 )
-from orchestrator_optical.products.product_blocks.optical_port import (
+from {{import_base_path}}.products.products_blocks.optical_port import (
     TransponderClientPort,
     TransponderClientPortInactive,
     TransponderClientPortProvisioning,
 )
-from orchestrator_optical.products.product_blocks.transport_channel import (
+from {{import_base_path}}.products.products_blocks.optical_transport_channel import (
     OpticalTransportChannel,
     OpticalTransportChannelInactive,
     OpticalTransportChannelProvisioning,
@@ -64,3 +64,5 @@ class OpticalDigitalService(OpticalDigitalServiceProvisioning, AbstractOpticalDi
 
     client_ports: ClientPortsList[Clients]
     transport_channels: TransportChannelsList[OpticalTransportChannel]
+
+

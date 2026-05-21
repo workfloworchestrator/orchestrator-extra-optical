@@ -6,7 +6,7 @@ from annotated_types import Len
 from orchestrator.domain.base import ProductBlockModel
 from orchestrator.types import SI, SubscriptionLifecycle
 
-from orchestrator_optical.abstracts.product_blocks.spectrum_section import (
+from orchestrator_optical.abstracts.product_blocks.optical_spectrum_section import (
     AbstractOpticalSpectrumSectionBlock,
     AbstractOpticalSpectrumSectionBlockInactive,
     AbstractOpticalSpectrumSectionBlockProvisioning,

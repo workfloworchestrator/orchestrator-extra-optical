@@ -3,7 +3,7 @@ from enum import StrEnum
 from typing import Annotated
 
 from annotated_types import Len
-from orchestrator.domain.base import ProductBlock
+from orchestrator.domain.base import ProductBlockModel
 from orchestrator.domain.context_cache import get_from_cache
 from pydantic import computed_field
 
@@ -25,7 +25,7 @@ class NodeRole(StrEnum):
     TRANSPONDER_XOADM = "Transponder and xOADM"
 
 
-class AbstractOpticalNodeBlockInactive(ProductBlock, ABC):
+class AbstractOpticalNodeBlockInactive(ProductBlockModel, ABC):
     """Base Product Block for Optical Nodes."""
 
     sw_version: str | None = None

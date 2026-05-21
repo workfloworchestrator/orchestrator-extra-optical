@@ -1,3 +1,7 @@
+from typing import Annotated
+
+from pydantic import Field
+
 from orchestrator_optical.abstracts.product_blocks.optical_port import (
     AbstractOlsAddDropPortBlock,
     AbstractOlsAddDropPortBlockInactive,
@@ -12,66 +16,65 @@ from orchestrator_optical.abstracts.product_blocks.optical_port import (
     AbstractTransponderLinePortBlockInactive,
     AbstractTransponderLinePortBlockProvisioning,
 )
-from orchestrator_optical.products.product_blocks.optical_node import (
-    OpticalNode,
-    OpticalNodeInactive,
-    OpticalNodeProvisioning,
-)
+
+from {{import_base_path}}.products.products_blocks.optical_node import Node, NodeInactive, NodeProvisioning
 
 # --- Inactive ---
 
 
 class OlsAddDropPortInactive(AbstractOlsAddDropPortBlockInactive, product_block_name="OlsAddDropPort"):
-    host_node: OpticalNodeInactive
+    host_node: NodeInactive
 
 
 class OlsLinePortInactive(AbstractOlsLinePortBlockInactive, product_block_name="OlsLinePort"):
-    host_node: OpticalNodeInactive
+    host_node: NodeInactive
 
 
 class TransponderClientPortInactive(
     AbstractTransponderClientPortBlockInactive, product_block_name="TransponderClientPort"
 ):
-    host_node: OpticalNodeInactive
+    host_node: NodeInactive
 
 
 class TransponderLinePortInactive(AbstractTransponderLinePortBlockInactive, product_block_name="TransponderLinePort"):
-    host_node: OpticalNodeInactive
+    host_node: NodeInactive
 
 
 # --- Provisioning ---
 
 
 class OlsAddDropPortProvisioning(OlsAddDropPortInactive, AbstractOlsAddDropPortBlockProvisioning):
-    host_node: OpticalNodeProvisioning
+    host_node: NodeProvisioning
 
 
 class OlsLinePortProvisioning(OlsLinePortInactive, AbstractOlsLinePortBlockProvisioning):
-    host_node: OpticalNodeProvisioning
+    host_node: NodeProvisioning
 
 
 class TransponderClientPortProvisioning(TransponderClientPortInactive, AbstractTransponderClientPortBlockProvisioning):
-    host_node: OpticalNodeProvisioning
+    host_node: NodeProvisioning
 
 
 class TransponderLinePortProvisioning(TransponderLinePortInactive, AbstractTransponderLinePortBlockProvisioning):
-    host_node: OpticalNodeProvisioning
+    host_node: NodeProvisioning
 
 
 # --- Active ---
 
 
 class OlsAddDropPort(OlsAddDropPortProvisioning, AbstractOlsAddDropPortBlock):
-    host_node: OpticalNode
+    host_node: Node
 
 
 class OlsLinePort(OlsLinePortProvisioning, AbstractOlsLinePortBlock):
-    host_node: OpticalNode
+    host_node: Node
 
 
 class TransponderClientPort(TransponderClientPortProvisioning, AbstractTransponderClientPortBlock):
-    host_node: OpticalNode
+    host_node: Node
 
 
 class TransponderLinePort(TransponderLinePortProvisioning, AbstractTransponderLinePortBlock):
-    host_node: OpticalNode
+    host_node: Node
+
+

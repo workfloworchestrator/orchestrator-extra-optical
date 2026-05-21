@@ -6,7 +6,8 @@ from orchestrator_optical.abstracts.product_blocks.optical_spectrum import (
     AbstractOpticalSpectrumBlockProvisioning,
     OpticalSpectrumSectionsList,
 )
-from orchestrator_optical.products.product_blocks.spectrum_section import (
+
+from {{import_base_path}}.products.products_blocks.optical_spectrum_section import (
     OpticalSpectrumSection,
     OpticalSpectrumSectionInactive,
     OpticalSpectrumSectionProvisioning,
@@ -37,3 +38,5 @@ class OpticalSpectrum(OpticalSpectrumProvisioning, AbstractOpticalSpectrumBlock)
     """Active state of the Optical Spectrum product block."""
 
     sections: OpticalSpectrumSectionsList[OpticalSpectrumSection]
+
+

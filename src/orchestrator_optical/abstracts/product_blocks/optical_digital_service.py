@@ -7,7 +7,7 @@ from orchestrator.domain.base import ProductBlockModel
 from orchestrator.types import SI, SubscriptionLifecycle
 from pydantic import Field
 
-from orchestrator_optical.abstracts.product_blocks.coherent_pluggable import (
+from orchestrator_optical.abstracts.product_blocks.optical_coherent_pluggable import (
     AbstractCoherentPluggableBlock,
     AbstractCoherentPluggableBlockInactive,
     AbstractCoherentPluggableBlockProvisioning,
@@ -17,7 +17,7 @@ from orchestrator_optical.abstracts.product_blocks.optical_port import (
     AbstractTransponderClientPortBlockInactive,
     AbstractTransponderClientPortBlockProvisioning,
 )
-from orchestrator_optical.abstracts.product_blocks.transport_channel import (
+from orchestrator_optical.abstracts.product_blocks.optical_transport_channel import (
     AbstractOpticalTransportChannelBlock,
     AbstractOpticalTransportChannelBlockInactive,
     AbstractOpticalTransportChannelBlockProvisioning,

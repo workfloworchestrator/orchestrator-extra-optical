@@ -7,7 +7,7 @@ from orchestrator.domain.base import ProductBlockModel
 from orchestrator.types import SI, SubscriptionLifecycle
 from pydantic import Field, computed_field
 
-from orchestrator_optical.abstracts.product_blocks.coherent_pluggable import (
+from orchestrator_optical.abstracts.product_blocks.optical_coherent_pluggable import (
     AbstractCoherentPluggableBlock,
     AbstractCoherentPluggableBlockInactive,
     AbstractCoherentPluggableBlockProvisioning,

@@ -1,15 +1,4 @@
-# Copyright 2025 GARR.
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+# 
 
 import ast
 from typing import Annotated
@@ -91,9 +80,7 @@ def available_to_used_passbands(
     absolute_min_freq: Frequency = 191_325_000,
     absolute_max_freq: Frequency = 196_125_000,
 ) -> list[Passband]:
-    """
-    Calculates used frequency passbands within an absolute frequency range,
-    given a list of available (unused) frequency passbands.
+    """Calculates used frequency passbands within an absolute frequency range, given a list of available (unused) frequency passbands.
 
     Args:
         available_passbands: A list of Passbands. Assumed to be
@@ -105,21 +92,38 @@ def available_to_used_passbands(
         A list of Passband, where each passband represents an used frequency
         passband as (start_freq, end_freq). Returns an empty list if there are no used passbands.
     """
-    entire_band = (absolute_min_freq, absolute_max_freq)
-    used_passbands = [entire_band]
+    if absolute_min_freq >= absolute_max_freq:
+        msg = "absolute_min_freq must be less than absolute_max_freq"
+        raise ValueError(msg)
 
-    for available_passband in available_passbands:
-        current_used_passband = used_passbands.pop()
+    # Filter out available bands outside the absolute range and sort them
+    valid_available = []
+    for start, end in available_passbands:
+        if end <= absolute_min_freq or start >= absolute_max_freq:
+            continue
+        # Constrain available passbands to absolute limits
+        valid_available.append((max(start, absolute_min_freq), min(end, absolute_max_freq)))
 
-        intersection_start = max(current_used_passband[0], available_passband[0])
-        intersection_end = min(current_used_passband[1], available_passband[1])
+    # Sort strictly by start frequency
+    valid_available.sort(key=lambda x: x[0])
 
-        if intersection_start <= intersection_end:
-            if current_used_passband[0] < available_passband[0]:
-                used_passbands.append((current_used_passband[0], available_passband[0]))
-            if current_used_passband[1] > available_passband[1]:
-                used_passbands.append((available_passband[1], current_used_passband[1]))
-        else:
-            used_passbands.append(current_used_passband)
+    # Validate that available passbands are disjoint
+    for i in range(len(valid_available) - 1):
+        if valid_available[i][1] > valid_available[i + 1][0]:
+            msg = f"Overlapping available passbands detected: {valid_available[i]} and {valid_available[i+1]}"
+            raise ValueError(
+                msg
+            )
+
+    used_passbands: list[tuple[int, int]] = []
+    current_track = absolute_min_freq
+
+    for start, end in valid_available:
+        if start > current_track:
+            used_passbands.append((current_track, start))
+        current_track = max(current_track, end)
+
+    if current_track < absolute_max_freq:
+        used_passbands.append((current_track, absolute_max_freq))
 
     return used_passbands

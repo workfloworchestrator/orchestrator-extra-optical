@@ -1,8 +1,9 @@
 from enum import StrEnum
-from typing import Literal
+from typing import Annotated, Literal
 
 from orchestrator.domain.base import SubscriptionModel
 from orchestrator.types import SubscriptionLifecycle
+from pydantic import Discriminator, Field
 
 from orchestrator_optical.abstracts.product_blocks.optical_node import (
     AbstractOpticalNodeBlock,
@@ -10,8 +11,9 @@ from orchestrator_optical.abstracts.product_blocks.optical_node import (
     AbstractOpticalNodeBlockProvisioning,
     NodeRole,
 )
-from orchestrator_optical.products.product_blocks.deleteme_location import ReplaceMeLocation
 from orchestrator_optical.utils.custom_types.ip_address import IPAddress
+
+from {{import_base_path}}.products.products_blocks.optical_deleteme_location import ReplaceMeLocation
 
 
 class OpticalNodeInactive(AbstractOpticalNodeBlockInactive, product_block_name="OpticalNode"):
@@ -41,3 +43,12 @@ class NokiaFlexILSNodeProvisioning(NokiaFlexILSNodeInactive, AbstractOpticalNode
 
 class NokiaFlexILSNode(NokiaFlexILSNodeProvisioning, AbstractOpticalNodeBlock):
     pass
+
+
+Node = Annotated[OpticalNode | NokiaFlexILSNode, Discriminator(lambda x: x.vendor_platform)]
+NodeProvisioning = Annotated[
+    OpticalNodeProvisioning | NokiaFlexILSNodeProvisioning, Discriminator(lambda x: x.vendor_platform)
+]
+NodeInactive = Annotated[OpticalNodeInactive | NokiaFlexILSNodeInactive, Discriminator(lambda x: x.vendor_platform)]
+
+

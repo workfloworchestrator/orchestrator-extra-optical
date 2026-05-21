@@ -16,12 +16,13 @@ from orchestrator_optical.abstracts.product_blocks.optical_pipe import (
     AbstractLeasedSpectrumBlockProvisioning,
     ListOfPorts,
 )
-from orchestrator_optical.products.product_blocks.coherent_pluggable import (
+
+from {{import_base_path}}.products.products_blocks.optical_coherent_pluggable import (
     CoherentPluggable,
     CoherentPluggableInactive,
     CoherentPluggableProvisioning,
 )
-from orchestrator_optical.products.product_blocks.optical_port import (
+from {{import_base_path}}.products.products_blocks.optical_port import (
     OlsAddDropPort,
     OlsAddDropPortInactive,
     OlsAddDropPortProvisioning,
@@ -152,3 +153,5 @@ class LeasedSpectrum(LeasedSpectrumProvisioning, AbstractLeasedSpectrumBlock):
     """Active state of a Leased Spectrum product block."""
 
     terminations: ListOfPorts[LeasedSpectrumPortBlocks]
+
+
